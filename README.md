@@ -15,7 +15,6 @@ config adds improved defaults and extended support for the following:
 * Clojure (via nrepl)
 * Javascript / Coffeescript
 * Python
-* PHP
 * Haskell
 * Erlang
 * Common Lisp (with Slime)
