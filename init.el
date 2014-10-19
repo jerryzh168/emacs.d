@@ -145,6 +145,9 @@
 
 (provide 'init)
 
+
+(add-hook 'org-mode-hook (lambda () (setq truncate-lines nil)))
+
 ;; Local Variables:
 ;; coding: utf-8
 ;; no-byte-compile: t
