@@ -11,6 +11,28 @@
 
 (defconst *spell-check-support-enabled* nil) ;; Enable with t if you prefer
 (defconst *is-a-mac* (eq system-type 'darwin))
+(dolist (charset '(kana han symbol cjk-misc bopomofo))
+  (set-fontset-font (frame-parameter nil 'font)
+                    charset
+                   (font-spec :family "Kaiti SC" :size 14)
+                   ))
+
+
+;; packages
+(require 'package) ;; You might already have this line
+(add-to-list 'package-archives
+             '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+(when (< emacs-major-version 24)
+  ;; For important compatibility libraries like cl-lib
+  (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
+(package-initialize) ;; You might already have this line
+
+;; ----------------------------------------------------------------------------
+;; Settings of Mobile Org
+;; ----------------------------------------------------------------------------
+(setq org-directory "~/MyDocs/Orgs")
+(setq org-mobile-inbox-for-pull "~/MyDocs/Orgs/notes.org")
+(setq org-mobile-directory "~/Dropbox/Apps/MobileOrg")
 
 ;;----------------------------------------------------------------------------
 ;; Bootstrap config
@@ -99,6 +121,7 @@
 (require 'init-dash)
 (require 'init-ledger)
 ;; Extra packages which don't require any configuration
+(require 'clang-format)
 
 (require-package 'gnuplot)
 (require-package 'lua-mode)
@@ -145,8 +168,29 @@
 
 (provide 'init)
 
-
 (add-hook 'org-mode-hook (lambda () (setq truncate-lines nil)))
+
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
+(load-theme 'spolsky t)
+
+;; Pomodoro Shortcuts
+(fset 'pomodoro
+   "[ ]")
+(fset 'pomodoro-table
+  [?| ?  ?   ?|  ?   ?M  ?D  ?   ?|  ?\[  ?  ?\]  ?|]
+   )
+
+ (require 'esv)
+  ; the following keys should be mapped to whatever works best for
+  ; you:
+  ; C-c e looks up a passage and displays it in a pop-up window
+  (define-key global-map [(control c) ?e] 'esv-passage)
+  ; C-c i inserts an ESV passage in plain-text format at point
+  (define-key global-map [(control c) ?i] 'esv-insert-passage)
+  ; If you don't want to use customize, you can set this for casual
+  ; usage (but read http://www.esvapi.org/ for license):
+  (setq esv-key "IP")
+(add-hook 'text-mode-hook 'turn-on-esv-mode)
 
 ;; Local Variables:
 ;; coding: utf-8
